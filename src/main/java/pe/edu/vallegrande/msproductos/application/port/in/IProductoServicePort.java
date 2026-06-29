@@ -4,11 +4,12 @@ import pe.edu.vallegrande.msproductos.domain.model.Producto;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ProductoServicePort {
+public interface IProductoServicePort {
 
     Flux<Producto> findAll();
     Mono<Producto> findById(Long id);
-    Mono<Producto> save(Producto product);
+    Mono<Producto> create(Producto product);
+    Mono<Producto> update(Long id, Producto product);
     Mono<Void> delete(Long id);
-
+    Mono<Producto> decreaseStock(Long id, Integer quantity);
 }

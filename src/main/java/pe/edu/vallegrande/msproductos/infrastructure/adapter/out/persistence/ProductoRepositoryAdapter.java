@@ -1,13 +1,13 @@
 package pe.edu.vallegrande.msproductos.infrastructure.adapter.out.persistence;
 
 import org.springframework.stereotype.Repository;
-import pe.edu.vallegrande.msproductos.application.port.out.ProductoRepositoryPort;
+import pe.edu.vallegrande.msproductos.application.port.out.IProductoRepositoryPort;
 import pe.edu.vallegrande.msproductos.domain.model.Producto;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
-public class ProductoRepositoryAdapter implements ProductoRepositoryPort {
+public class ProductoRepositoryAdapter implements IProductoRepositoryPort {
 
     private final ProductoRepository repository;
 

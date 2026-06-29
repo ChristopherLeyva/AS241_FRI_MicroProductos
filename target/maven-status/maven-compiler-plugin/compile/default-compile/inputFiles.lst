@@ -1,6 +1,6 @@
 /Users/Christopher/AS241_FRI_MicroProductos/src/main/java/pe/edu/vallegrande/msproductos/MsProductosApplication.java
-/Users/Christopher/AS241_FRI_MicroProductos/src/main/java/pe/edu/vallegrande/msproductos/application/port/in/ProductoServicePort.java
-/Users/Christopher/AS241_FRI_MicroProductos/src/main/java/pe/edu/vallegrande/msproductos/application/port/out/ProductoRepositoryPort.java
+/Users/Christopher/AS241_FRI_MicroProductos/src/main/java/pe/edu/vallegrande/msproductos/application/port/in/IProductoServicePort.java
+/Users/Christopher/AS241_FRI_MicroProductos/src/main/java/pe/edu/vallegrande/msproductos/application/port/out/IProductoRepositoryPort.java
 /Users/Christopher/AS241_FRI_MicroProductos/src/main/java/pe/edu/vallegrande/msproductos/application/service/ProductoService.java
 /Users/Christopher/AS241_FRI_MicroProductos/src/main/java/pe/edu/vallegrande/msproductos/domain/model/Producto.java
 /Users/Christopher/AS241_FRI_MicroProductos/src/main/java/pe/edu/vallegrande/msproductos/infrastructure/adapter/in/rest/ProductoRest.java

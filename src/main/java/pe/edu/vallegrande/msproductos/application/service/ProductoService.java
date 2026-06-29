@@ -1,20 +1,18 @@
 package pe.edu.vallegrande.msproductos.application.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pe.edu.vallegrande.msproductos.application.port.in.ProductoServicePort;
-import pe.edu.vallegrande.msproductos.application.port.out.ProductoRepositoryPort;
+import pe.edu.vallegrande.msproductos.application.port.in.IProductoServicePort;
+import pe.edu.vallegrande.msproductos.application.port.out.IProductoRepositoryPort;
 import pe.edu.vallegrande.msproductos.domain.model.Producto;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class ProductoService implements ProductoServicePort {
+@RequiredArgsConstructor
+public class ProductoService implements IProductoServicePort {
 
-    private final ProductoRepositoryPort repositoryPort;
-
-    public ProductoService(ProductoRepositoryPort repositoryPort) {
-        this.repositoryPort = repositoryPort;
-    }
+    private final IProductoRepositoryPort repositoryPort;
 
     @Override
     public Flux<Producto> findAll() {
@@ -27,8 +25,20 @@ public class ProductoService implements ProductoServicePort {
     }
 
     @Override
-    public Mono<Producto> save(Producto product) {
+    public Mono<Producto> create(Producto product) {
         return repositoryPort.save(product);
+    }
+
+    @Override
+    public Mono<Producto> update(Long id, Producto product) {
+        return repositoryPort.findById(id)
+                .flatMap(existing -> {
+                    existing.setName(product.getName());
+                    existing.setPrice(product.getPrice());
+                    existing.setStock(product.getStock());
+                    existing.setActive(product.getActive());
+                    return repositoryPort.save(existing);
+                });
     }
 
     @Override
@@ -36,4 +46,15 @@ public class ProductoService implements ProductoServicePort {
         return repositoryPort.deleteById(id);
     }
 
+    @Override
+    public Mono<Producto> decreaseStock(Long id, Integer quantity) {
+        return repositoryPort.findById(id)
+                .flatMap(product -> {
+                    if (product.getStock() >= quantity) {
+                        product.setStock(product.getStock() - quantity);
+                        return repositoryPort.save(product);
+                    }
+                    return Mono.error(new IllegalArgumentException("Insufficient stock"));
+                });
+    }
 }
