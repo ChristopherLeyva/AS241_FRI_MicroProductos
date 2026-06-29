@@ -1,7 +1,9 @@
 package pe.edu.vallegrande.msproductos.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import pe.edu.vallegrande.msproductos.application.port.in.IProductoServicePort;
 import pe.edu.vallegrande.msproductos.application.port.out.IProductoRepositoryPort;
 import pe.edu.vallegrande.msproductos.domain.model.Producto;
@@ -52,6 +54,13 @@ public class ProductoService implements IProductoServicePort {
 
     @Override
     public Mono<Producto> decreaseStock(Long id, Integer quantity) {
-        return repositoryPort.decreaseStock(id, quantity);
+        return repositoryPort.findById(id)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado")))
+                .flatMap(product -> {
+                    if (product.getStock() < quantity) {
+                        return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Stock insuficiente"));
+                    }
+                    return repositoryPort.decreaseStock(id, quantity);
+                });
     }
 }
