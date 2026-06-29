@@ -1,5 +1,8 @@
+pe/edu/vallegrande/msproductos/infrastructure/adapter/out/persistence/ProductoRepositoryAdapter.class
 pe/edu/vallegrande/msproductos/infrastructure/adapter/out/persistence/ProductoRepository.class
-pe/edu/vallegrande/msproductos/application/port/in/IProductoServicePort.class
-pe/edu/vallegrande/msproductos/application/port/out/IProductoRepositoryPort.class
-pe/edu/vallegrande/msproductos/domain/model/Producto.class
+pe/edu/vallegrande/msproductos/application/service/ProductoService.class
+pe/edu/vallegrande/msproductos/application/port/out/ProductoRepositoryPort.class
 pe/edu/vallegrande/msproductos/MsProductosApplication.class
+pe/edu/vallegrande/msproductos/domain/model/Producto.class
+pe/edu/vallegrande/msproductos/application/port/in/ProductoServicePort.class
+pe/edu/vallegrande/msproductos/infrastructure/adapter/in/rest/ProductoRest.class
