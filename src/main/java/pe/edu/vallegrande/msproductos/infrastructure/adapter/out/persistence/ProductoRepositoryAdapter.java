@@ -1,23 +1,19 @@
 package pe.edu.vallegrande.msproductos.infrastructure.adapter.out.persistence;
 
-import org.springframework.stereotype.Repository;
+import lombok.RequiredArgsConstructor;
 import pe.edu.vallegrande.msproductos.application.port.out.IProductoRepositoryPort;
 import pe.edu.vallegrande.msproductos.domain.model.Producto;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Repository
+@RequiredArgsConstructor
 public class ProductoRepositoryAdapter implements IProductoRepositoryPort {
 
     private final ProductoRepository repository;
 
-    public ProductoRepositoryAdapter(ProductoRepository repository) {
-        this.repository = repository;
-    }
-
     @Override
-    public Flux<Producto> findAll() {
-        return repository.findAll();
+    public Flux<Producto> findAllActive() {
+        return repository.findByActiveTrue();
     }
 
     @Override
@@ -31,8 +27,11 @@ public class ProductoRepositoryAdapter implements IProductoRepositoryPort {
     }
 
     @Override
-    public Mono<Void> deleteById(Long id) {
-        return repository.deleteById(id);
+    public Mono<Producto> decreaseStock(Long id, Integer quantity) {
+        return repository.findById(id)
+                .flatMap(product -> {
+                    product.setStock(product.getStock() - quantity);
+                    return repository.save(product);
+                });
     }
-
 }

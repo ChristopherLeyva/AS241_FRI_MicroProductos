@@ -16,7 +16,7 @@ public class ProductoService implements IProductoServicePort {
 
     @Override
     public Flux<Producto> findAll() {
-        return repositoryPort.findAll();
+        return repositoryPort.findAllActive();
     }
 
     @Override
@@ -43,18 +43,15 @@ public class ProductoService implements IProductoServicePort {
 
     @Override
     public Mono<Void> delete(Long id) {
-        return repositoryPort.deleteById(id);
+        return repositoryPort.findById(id)
+                .flatMap(existing -> {
+                    existing.setActive(false);
+                    return repositoryPort.save(existing);
+                }).then();
     }
 
     @Override
     public Mono<Producto> decreaseStock(Long id, Integer quantity) {
-        return repositoryPort.findById(id)
-                .flatMap(product -> {
-                    if (product.getStock() >= quantity) {
-                        product.setStock(product.getStock() - quantity);
-                        return repositoryPort.save(product);
-                    }
-                    return Mono.error(new IllegalArgumentException("Insufficient stock"));
-                });
+        return repositoryPort.decreaseStock(id, quantity);
     }
 }
