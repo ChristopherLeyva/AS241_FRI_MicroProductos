@@ -28,10 +28,6 @@ public class ProductoRepositoryAdapter implements IProductoRepositoryPort {
 
     @Override
     public Mono<Producto> decreaseStock(Long id, Integer quantity) {
-        return repository.findById(id)
-                .flatMap(product -> {
-                    product.setStock(product.getStock() - quantity);
-                    return repository.save(product);
-                });
+        return repository.decreaseStock(id, quantity);
     }
 }

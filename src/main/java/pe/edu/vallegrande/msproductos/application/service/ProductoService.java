@@ -54,13 +54,7 @@ public class ProductoService implements IProductoServicePort {
 
     @Override
     public Mono<Producto> decreaseStock(Long id, Integer quantity) {
-        return repositoryPort.findById(id)
-                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado")))
-                .flatMap(product -> {
-                    if (product.getStock() < quantity) {
-                        return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Stock insuficiente"));
-                    }
-                    return repositoryPort.decreaseStock(id, quantity);
-                });
+        return repositoryPort.decreaseStock(id, quantity)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Stock insuficiente")));
     }
 }
